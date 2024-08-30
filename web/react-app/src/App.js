@@ -1,30 +1,30 @@
 import logo from "./logo.svg";
 import "./App.css";
 import NavBar from "./components/NavBar";
-import { BrowserRouter, Routes, Route  } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Menu from "./components/Menu.js";
-import RegisterNewEmployee from "./components/RegisterNewEmployee";
-import RecordHoursData from "./components/RecordHoursData";
-import Reports from "./components/Reports";
-function App() {
+import RecordHoursData from "./components/record_hour/RecordHoursData.js";
+import Reports from "./components/report/Reports.js";
+import Employee from "./components/employee/Employee.js";
+import Example from "./components/Example.js";
+const App = () => {
   return (
-      <BrowserRouter>
-        <div className="App">
+    <BrowserRouter>
+      <div className="App App-color">
         <NavBar />
-        
+
         <Routes>
-          <Route exact path="/" element={<Menu/>} />
-          <Route element={<Menu/>} />
-          <Route
-            path="/register-new-employee"
-            element={<RegisterNewEmployee />}
-          />
+          <Route exact path="/" element={<Menu />} />
+          <Route element={<Menu />} />
+          <Route path="/employee" element={<Employee />} />
+          <Route path="/example" element={<Example />} />
+
           <Route path="/record-hours-data" element={<RecordHoursData />} />
           <Route path="/reports" element={<Reports />} />
         </Routes>
-        </div>
-      </BrowserRouter>
+      </div>
+    </BrowserRouter>
   );
-}
+};
 
 export default App;
