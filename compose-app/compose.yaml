@@ -1,0 +1,39 @@
+services:
+  server:
+    build:
+      context: ../server/reactSharpAPI/
+    container_name: server
+    environment:
+      - DB_HOST=server-db
+      - DB_PORT=5432
+      - DB_NAME=rrhh
+      - DB_USER=rrhh
+      - DB_PASSWORD=rrhh
+    ports:
+      - 5001:5001
+    depends_on:
+      server-db:
+        condition: service_started
+    healthcheck:
+      test: curl --fail http://localhost:5001/react-sharp-api/v1/status || exit 1
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+      
+
+  server-db:
+    image: 'postgres:16.1-alpine3.19'
+    container_name: server-db
+    ports:
+      - 5432:5432
+    volumes:
+      - ../db/:/docker-entrypoint-initdb.d
+      - postgres-server:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=rrhh
+      - POSTGRES_USER=rrhh
+      - POSTGRES_PASSWORD=rrhh
+
+volumes:
+  postgres-server:

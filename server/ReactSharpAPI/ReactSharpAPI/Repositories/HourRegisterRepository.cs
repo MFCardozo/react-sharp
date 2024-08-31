@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using ReactSharpAPI.Context;
+﻿using ReactSharpAPI.Context;
 using ReactSharpAPI.Models;
 
 namespace ReactSharpAPI.Repositories
@@ -15,6 +14,7 @@ namespace ReactSharpAPI.Repositories
 
         public async Task Add(HourRegister hourRegister)
         {
+            hourRegister.dateRegister = hourRegister.dateRegister.ToUniversalTime();
             await _context.HourRegisters.AddAsync(hourRegister);
             await _context.SaveChangesAsync();
         }

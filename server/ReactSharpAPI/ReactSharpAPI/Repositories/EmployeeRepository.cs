@@ -23,16 +23,30 @@ namespace ReactSharpAPI.Repositories
             return await _context.Employees.FindAsync(id);
         }
 
-        public async Task Add(Employee empleado)
+        public async Task Add(Employee employee)
         {
-            await _context.Employees.AddAsync(empleado);
+            employee.DateOfBirth = employee.DateOfBirth.ToUniversalTime();
+            await _context.Employees.AddAsync(employee);
             await _context.SaveChangesAsync();
         }
 
-        public async Task Update(Employee empleado)
+        public async Task Update(int id, Employee employee)
         {
-            _context.Employees.Update(empleado);
-            await _context.SaveChangesAsync();
+            employee.DateOfBirth = employee.DateOfBirth.ToUniversalTime();
+            _context.Entry(employee).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                var existingEmployee = await _context.Employees.FindAsync(id);
+                if (existingEmployee != null)
+                {
+                    throw;
+                }
+            }
         }
 
         public async Task Delete(int id)
@@ -44,58 +58,5 @@ namespace ReactSharpAPI.Repositories
                 await _context.SaveChangesAsync();
             }
         }
-
-
-
-
-
-
-
-
-
-
-        /*
-        private readonly List<Employee> _employees;
-
-        public EmployeeRepository()
-        {
-            _employees = new List<Employee>
-        {
-            new Employee { Id = 1, Names = "Juan Pérez", LastNames = "Cardozo Rami" ,Document = "32423", DateOfBirth = "1999-08-08"},
-            new Employee { Id = 2, Names = "Jose Emmanuel", LastNames = "Alfonzo Kichu" ,Document = "562623", DateOfBirth = "1999-08-08"}
-        };
-        }
-
-        public IEnumerable<Employee> GetAll() => _employees;
-
-        public Employee GetById(int id) => _employees.FirstOrDefault(e => e.Id == id );
-
-        public void Add(Employee empleado)
-        {
-            empleado.Id = _employees.Max(e => e.Id) + 1;
-            _employees.Add(empleado);
-        }
-
-        public void Update(Employee empleado)
-        {
-            var existingEmployee = GetById(empleado.Id);
-            if (existingEmployee != null)
-            {
-                existingEmployee.Names = empleado.Names;
-                existingEmployee.LastNames = empleado.LastNames;
-                existingEmployee.Document = empleado.Document;
-                existingEmployee.DateOfBirth = empleado.DateOfBirth;
-            }
-        }
-
-        public void Delete(int id)
-        {
-            var empleado = GetById(id);
-            if (empleado != null)
-            {
-                _employees.Remove(empleado);
-            }
-        }
-        */
     }
 }

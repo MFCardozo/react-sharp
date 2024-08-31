@@ -4,7 +4,7 @@ using ReactSharpAPI.Repositories;
 
 namespace ReactSharpAPI.Controllers
 {
-    [Route("react-sharp-api/v1/[controller]")]
+    [Route("v1/[controller]")]
     [ApiController]
     public class HourRegisterController : ControllerBase
     {
@@ -15,12 +15,18 @@ namespace ReactSharpAPI.Controllers
             _hourRegisterRepository = hourRegisterRepository;
         }
 
-        // POST: {API}/HourRegister/
+        // POST: /HourRegister/
         [HttpPost]
-        public ActionResult<Employee> PostHourRegister(HourRegister hourRegister)
+        public async Task<ActionResult<HourRegister>> PostHourRegister(HourRegister hourRegister)
         {
-            _hourRegisterRepository.Add(hourRegister);
-            return CreatedAtAction( hourRegister);
+            if (!ModelState.IsValid)
+            {
+
+                return BadRequest();
+
+            }
+            await _hourRegisterRepository.Add(hourRegister);
+            return NoContent();
         }
     }
 }

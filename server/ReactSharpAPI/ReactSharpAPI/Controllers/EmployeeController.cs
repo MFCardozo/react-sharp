@@ -4,7 +4,7 @@ using ReactSharpAPI.Repositories;
 
 namespace ReactSharpAPI.Controllers
 {
-    [Route("react-sharp-api/v1/[controller]")]
+    [Route("v1/[controller]")]
     [ApiController]
     public class EmployeeController : ControllerBase
     {
@@ -15,18 +15,18 @@ namespace ReactSharpAPI.Controllers
             _employeeRepository = employeeRepository;
         }
 
-        // GET: {API}/Employee/
+        // GET: /Employee/
         [HttpGet]
-        public ActionResult<IEnumerable<Employee>> GetEmployees()
+        public async Task<ActionResult<IEnumerable<Employee>>> GetEmployees()
         {
-            return Ok(_employeeRepository.GetAll());
+            return Ok(await _employeeRepository.GetAll());
         }
 
-        // GET: {API}/Employee/{id}
+        // GET: /Employee/{id}
         [HttpGet("{id}")]
-        public ActionResult<Employee> GetEmployee(int id)
+        public async Task<ActionResult<Employee>> GetEmployee(int id)
         {
-            var empleado = _employeeRepository.GetById(id);
+            var empleado = await _employeeRepository.GetById(id);
 
             if (empleado == null)
             {
@@ -36,45 +36,42 @@ namespace ReactSharpAPI.Controllers
             return Ok(empleado);
         }
 
-        // POST: {API}/Employee/
+        // POST: /Employee/
         [HttpPost]
-        public ActionResult<Employee> PostEmployee(Employee empleado)
+        public async Task<ActionResult<Employee>> PostEmployee(Employee employee)
         {
-            _employeeRepository.Add(empleado);
-            return CreatedAtAction(nameof(GetEmployee), new { id = empleado.Id }, empleado);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+
+            }
+            await _employeeRepository.Add(employee);
+            return CreatedAtAction(nameof(GetEmployee), new { id = employee.Id }, employee);
         }
 
-        // PUT: {API}/Employee/{id}
+        // PUT: /Employee/{id}
         [HttpPut("{id}")]
-        public IActionResult PutEmployee(int id, Employee empleado)
+        public async Task<ActionResult> PutEmployee(int id, Employee employee)
         {
-            if (id != empleado.Id)
+            if (!ModelState.IsValid)
             {
                 return BadRequest();
             }
-
-            var existingEmpleado = _employeeRepository.GetById(id);
-            if (existingEmpleado == null)
-            {
-                return NotFound();
-            }
-
-            _employeeRepository.Update(empleado);
-
+            await _employeeRepository.Update(id, employee);
             return NoContent();
         }
 
-        // DELETE: {API}/Employee/
+        // DELETE: /Employee/{id}
         [HttpDelete("{id}")]
-        public IActionResult DeleteEmployee(int id)
+        public async Task<IActionResult> DeleteEmployee(int id)
         {
-            var empleado = _employeeRepository.GetById(id);
-            if (empleado == null)
+            var employee = await _employeeRepository.GetById(id);
+            if (employee == null)
             {
                 return NotFound();
             }
 
-            _employeeRepository.Delete(id);
+            await _employeeRepository.Delete(id);
 
             return NoContent();
         }
