@@ -1,7 +1,7 @@
 # react-sharp
 ## Sistema de control de RRHH
 
-### React.js con Microsoft .NET como backend y postgreSQL como base de datos
+### React.js con Microsoft .NET como Backend y postgreSQL como base de datos
 
 Estructura del proyecto:
 ```
@@ -51,7 +51,7 @@ services:
       - 5001:5001
     ...
 ```
-El archivo define los tres servicios que van a levantarse `web`, `server` and `server-db`.
+El archivo define los tres servicios que van a levantarse `web`, `server` y `server-db`.
 Al momento de levantar el proyecto, docker compose asigna el puerto 3000 al servicio web del puerto del contenedor al host local como se especifica en el archivo.
 Verificar que el puerto 3000 ya no este en uso para que funcione correctamente el deploy.
 
