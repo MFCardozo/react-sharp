@@ -12,6 +12,8 @@ services:
       - POSTGRES_DB=rrhh
       - POSTGRES_USER=rrhh
       - POSTGRES_PASSWORD=rrhh
+    networks:
+      - server-db
   
   server:
     build:
@@ -33,17 +35,17 @@ services:
       timeout: 10s
       retries: 3
       start_period: 10s
+    networks:
+      - server-db
+      - web-server
 
-      
-
-  
 
   web:
     build:
       context: ../web/react-app/
     container_name: web
     environment:
-      - REACT_APP_API_URL=http://server:5001/react-sharp-api/v1
+      - REACT_APP_API_URL=http://localhost:5001/react-sharp-api/v1
     ports:
       - 3000:3000
     depends_on:
@@ -54,6 +56,13 @@ services:
       timeout: 10s
       retries: 3
       start_period: 10s
+    networks:
+      - server-db
+      - web-server
 
 volumes:
   postgres-server:
+
+networks:
+  web-server: {}
+  server-db: {}

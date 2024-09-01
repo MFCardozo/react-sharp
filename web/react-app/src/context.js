@@ -105,8 +105,7 @@ const EmployeeProvider = ({ children }) => {
     try {
       newHourData.startHour = `${newHourData.startHour}:00`;
       newHourData.finishHour = `${newHourData.finishHour}:00`;
-      console.log(JSON.stringify(newHourData));
-      const response = await serverApi.post(
+      await serverApi.post(
         `${apiUrl}/HourRegister`,
         newHourData,
       );
@@ -124,7 +123,6 @@ const EmployeeProvider = ({ children }) => {
   const getEmployeeReport = async (e) => {
     e.preventDefault();
     try {
-      console.log(JSON.stringify(newEmployeeReportFilter));
       const response = await serverApi.get(`${apiUrl}/EmployeeHourReport`, {
         params: {
           employeeId: newEmployeeReportFilter.employeeId,
@@ -132,7 +130,6 @@ const EmployeeProvider = ({ children }) => {
           endDate: newEmployeeReportFilter.endDate,
         },
       });
-      console.log(JSON.stringify(response));
       setEmployeeReport(response.data);
     } catch (error) {
       if (error.status?.toString().startsWith("40")) {
