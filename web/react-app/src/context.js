@@ -34,6 +34,8 @@ const EmployeeProvider = ({ children }) => {
     startDate: "",
     endDate: "",
   });
+  // alerta del filtro de reporte
+  const [filterApplied, setFilterApplied] = useState(null);
 
   // listado de reporte de funcionario
   const [employeeReport, setEmployeeReport] = useState([]);
@@ -131,12 +133,17 @@ const EmployeeProvider = ({ children }) => {
         },
       });
       setEmployeeReport(response.data);
+      setFilterApplied(null);
     } catch (error) {
       if (error.status?.toString().startsWith("40")) {
-        alert("¡No se encontro ningun registro para el Funcionario!");
+        setFilterApplied("¡No se encontro ningun registro para el Funcionario!");
       } else {
+        setFilterApplied("¡Ocurrio un error al filtrar el reporte para el Funcionario!");
         console.error("Error getting Employee Report:", error);
       }
+    }
+    finally{
+      setTimeout(() => setFilterApplied(null), 5000);
     }
   };
 
@@ -162,6 +169,7 @@ const EmployeeProvider = ({ children }) => {
         setNewEmployeeReportFilter,
         employeeReport,
         getEmployeeReport,
+        filterApplied
       }}
     >
       {children}

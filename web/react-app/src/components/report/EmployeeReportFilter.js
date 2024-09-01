@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Button, FormGroup, Label, Input, Form } from "reactstrap";
+import { Button, FormGroup, Label, Input, Form, UncontrolledAlert } from "reactstrap";
 import { EmployeeContext } from "../../context";
 
 const EmployeeReportFilter = () => {
@@ -8,6 +8,7 @@ const EmployeeReportFilter = () => {
     newEmployeeReportFilter,
     setNewEmployeeReportFilter,
     getEmployeeReport,
+    filterApplied
   } = useContext(EmployeeContext);
 
   const handleInputChange = (e) => {
@@ -74,6 +75,11 @@ const EmployeeReportFilter = () => {
             Filtrar
           </Button>
         </Form>
+        {filterApplied &&  (
+        <>
+          <hr />
+          <UncontrolledAlert color="info">{filterApplied}</UncontrolledAlert>
+        </>)}
       </div>
     </div>
   );

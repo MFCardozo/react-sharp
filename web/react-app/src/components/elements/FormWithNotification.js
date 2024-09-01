@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Form, Alert } from "reactstrap";
+import { Form, UncontrolledAlert } from "reactstrap";
 
 const FormWithNotification = ({ children, msg, onSubmitAction }) => {
   const [time, setTime] = useState("");
@@ -11,7 +11,7 @@ const FormWithNotification = ({ children, msg, onSubmitAction }) => {
       onSubmitAction(e);
       setAlertVisible(true);
       setTime("");
-      setTimeout(() => setAlertVisible(false), 3000); // Ocultar la alerta después de 3 segundos
+      setTimeout(() => setAlertVisible(false), 5000); // Ocultar la alerta después de 5 segundos
     } catch (error) {
       console.error("Error submitting form:", error);
     }
@@ -26,7 +26,7 @@ const FormWithNotification = ({ children, msg, onSubmitAction }) => {
       {alertVisible && (
         <>
           <hr />
-          <Alert color="success">{msg}</Alert>
+          <UncontrolledAlert color="success">{msg}</UncontrolledAlert>
         </>
       )}
     </>

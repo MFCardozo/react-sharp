@@ -1,5 +1,4 @@
 services:
-
   server-db:
     image: 'postgres:16.1-alpine3.19'
     container_name: server-db
@@ -55,10 +54,18 @@ services:
       test: curl --fail http://localhost:3000 || exit 1
       timeout: 10s
       retries: 3
-      start_period: 10s
+      start_period: 60s
     networks:
       - server-db
       - web-server
+
+  notifier:
+    container_name: not
+    image: busybox
+    depends_on:
+      web:
+        condition: service_healthy
+    command: /bin/sh -c "echo 'Application succefully started, open browser in http://localhost:3000'"
 
 volumes:
   postgres-server:
