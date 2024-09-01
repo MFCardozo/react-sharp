@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "react-redux": "^9.1.2",
+    "reactstrap": "^9.2.2"
+  }
+}
