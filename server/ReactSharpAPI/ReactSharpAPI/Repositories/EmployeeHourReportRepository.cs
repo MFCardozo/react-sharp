@@ -1,5 +1,4 @@
-﻿
-using ReactSharpAPI.Context;
+﻿using ReactSharpAPI.Context;
 using ReactSharpAPI.Models;
 
 namespace ReactSharpAPI.Repositories

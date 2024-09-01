@@ -21,9 +21,7 @@ namespace ReactSharpAPI.Controllers
         {
             if (!ModelState.IsValid)
             {
-
                 return BadRequest();
-
             }
             await _hourRegisterRepository.Add(hourRegister);
             return NoContent();

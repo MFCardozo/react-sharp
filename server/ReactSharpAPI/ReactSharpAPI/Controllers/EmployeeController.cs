@@ -43,7 +43,6 @@ namespace ReactSharpAPI.Controllers
             if (!ModelState.IsValid)
             {
                 return BadRequest();
-
             }
             await _employeeRepository.Add(employee);
             return CreatedAtAction(nameof(GetEmployee), new { id = employee.Id }, employee);

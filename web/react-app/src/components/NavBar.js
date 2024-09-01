@@ -8,6 +8,11 @@ function NavBar() {
         <div className="container">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">
+              <Link to="/" className="nav-link">
+                Inicio
+              </Link>
+            </li>
+            <li className="nav-item">
               <Link to="/employee" className="nav-link">
                 Funcionarios
               </Link>

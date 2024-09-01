@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ReactSharpAPI")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+030aea6a8b5d0fbe231b3cb83157e9614aec50db")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+997acc8feaabe0230a901466b355438d44a482a0")]
 [assembly: System.Reflection.AssemblyProductAttribute("ReactSharpAPI")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ReactSharpAPI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

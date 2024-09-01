@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ReactSharpAPI.Context;
+using ReactSharpAPI.Helpers;
 using ReactSharpAPI.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,7 +20,10 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 //    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Add services to the container.
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.Converters.Add(new CustomDateTimeConverter("yyyy-MM-dd"));
+});
 builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 builder.Services.AddScoped<IHourRegisterRepository, HourRegisterRepository>();
 builder.Services.AddScoped<IEmployeeHourReportRepository, EmployeeHourReportRepository>();
@@ -27,6 +31,15 @@ builder.Services.AddScoped<IEmployeeHourReportRepository, EmployeeHourReportRepo
 builder.WebHost.ConfigureKestrel(options =>
 {
     options.ListenAnyIP(5001);
+});
+
+// Para ambiente de pruebas
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll",
+        builder => builder.AllowAnyOrigin()
+                          .AllowAnyMethod()
+                          .AllowAnyHeader());
 });
 
 var app = builder.Build();
@@ -47,6 +60,9 @@ app.UsePathBase(new PathString("/react-sharp-api"));
 app.UseRouting();
 
 app.UseAuthorization();
+
+// para ambiente DEV
+app.UseCors("AllowAll");
 
 app.MapControllerRoute(
     name: "default",

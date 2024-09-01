@@ -1,35 +1,24 @@
-import React, { useState } from "react";
-import { Button, FormGroup, Label, Input, Form } from "reactstrap";
+import React, { useContext } from "react";
+import { Button, FormGroup, Label, Input } from "reactstrap";
+import { EmployeeContext } from "../../context";
+import FormWithNotification from "../elements/FormWithNotification";
 
-const EmployeeForm = ({ employees, setEmployees }) => {
-  const [newEmployee, setNewEmployee] = useState({
-    name: "",
-    lastName: "",
-    docNumber: "",
-    dateBirth: "",
-  });
+const EmployeeForm = () => {
+  const { newEmployee, setNewEmployee, addEmployee } =
+    useContext(EmployeeContext);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setNewEmployee((prevState) => ({ ...prevState, [name]: value }));
   };
 
-  const addEmployee = () => {
-    const id = employees.length ? employees[employees.length - 1].id + 1 : 1;
-    setEmployees([...employees, { id, ...newEmployee }]);
-    setNewEmployee({ name: "", lastName: "", docNumber: "", dateBirth: "" }); // Limpiar formulario
-  };
-
   return (
     <div className="d-flex justify-content-center">
       <div>
         <h2>Agregar Funcionario</h2>
-        <Form
-          inline
-          onSubmit={(e) => {
-            e.preventDefault();
-            addEmployee();
-          }}
+        <FormWithNotification
+          msg={"¡Funcionario Registrado exitosamente!"}
+          onSubmitAction={addEmployee}
         >
           <FormGroup>
             <Label for="name" hidden>
@@ -60,29 +49,29 @@ const EmployeeForm = ({ employees, setEmployees }) => {
             />
           </FormGroup>{" "}
           <FormGroup>
-            <Label for="docNumber" hidden>
+            <Label for="documentNumber" hidden>
               C.I
             </Label>
             <Input
-              type="text"
-              name="docNumber"
-              id="docNumber"
+              type="number"
+              name="documentNumber"
+              id="documentNumber"
               placeholder="C.I"
-              value={newEmployee.docNumber}
+              value={newEmployee.documentNumber}
               onChange={handleInputChange}
               required
             />
           </FormGroup>{" "}
           <FormGroup>
-            <Label for="dateBirth" hidden>
+            <Label for="dateOfBirth" hidden>
               Fecha de Nacimiento
             </Label>
             <Input
-              type="text"
-              name="dateBirth"
-              id="dateBirth"
+              type="date"
+              name="dateOfBirth"
+              id="dateOfBirth"
               placeholder="Fecha de Nacimiento"
-              value={newEmployee.dateBirth}
+              value={newEmployee.dateOfBirth}
               onChange={handleInputChange}
               required
             />
@@ -90,7 +79,7 @@ const EmployeeForm = ({ employees, setEmployees }) => {
           <Button color="primary" type="submit">
             Agregar Funcionario
           </Button>
-        </Form>
+        </FormWithNotification>
       </div>
     </div>
   );

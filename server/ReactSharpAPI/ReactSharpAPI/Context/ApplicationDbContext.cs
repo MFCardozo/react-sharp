@@ -25,7 +25,6 @@ namespace ReactSharpAPI.Context
 
             modelBuilder.Entity<EmployeeHourReport>()
             .HasNoKey(); // Relacion sin Primary Key
-
         }
 
         // Reporte de Funcionario por Horas
@@ -56,7 +55,5 @@ namespace ReactSharpAPI.Context
                 new NpgsqlParameter("endDate", endDate))
                 .ToListAsync();
         }
-
-
     }
 }

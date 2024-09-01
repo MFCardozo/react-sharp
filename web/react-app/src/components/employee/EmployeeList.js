@@ -1,19 +1,32 @@
 import React from "react";
 import { Table, Button } from "reactstrap";
+import { formatDate } from "../../util/DateUtils";
+import { apiUrl } from "../../config";
+import axios from "axios";
 
 const EmployeeList = ({
   employees,
   setEmployees,
   toggleModal,
-  setCurrentEmployee,
+  setEditingEmployee,
 }) => {
-  const handleEdit = (employee) => {
-    setCurrentEmployee(employee);
+  const startEdit = (employee) => {
+    setEditingEmployee(employee);
     toggleModal();
   };
 
-  const handleDelete = (id) => {
-    setEmployees(employees.filter((emp) => emp.id !== id));
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`${apiUrl}/employee/${id}`);
+      setEmployees(employees.filter((emp) => emp.id !== id));
+    } catch (error) {
+      console.error("Error deleting employee:", error);
+    }
+  };
+
+  const NumberFormatter = ({ numberString }) => {
+    const number = parseInt(numberString);
+    return <span>{number.toLocaleString("es-ES")}</span>;
   };
 
   return (
@@ -32,12 +45,18 @@ const EmployeeList = ({
         <tbody>
           {employees.map((emp) => (
             <tr key={emp.id}>
-              <td>{emp.name}</td>
-              <td>{emp.lastName}</td>
-              <td>{emp.docNumber}</td>
-              <td>{emp.dateBirth}</td>
+              <td>{emp.name ? emp.name : "-"}</td>
+              <td>{emp.lastName ? emp.lastName : "-"}</td>
               <td>
-                <Button color="warning" onClick={() => handleEdit(emp)}>
+                {emp.documentNumber ? (
+                  <NumberFormatter numberString={emp.documentNumber} />
+                ) : (
+                  "-"
+                )}
+              </td>
+              <td>{emp.dateOfBirth ? formatDate(emp.dateOfBirth) : "-"}</td>
+              <td>
+                <Button color="warning" onClick={() => startEdit(emp)}>
                   Editar
                 </Button>{" "}
                 <Button color="danger" onClick={() => handleDelete(emp.id)}>

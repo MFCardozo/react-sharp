@@ -1,57 +1,69 @@
-import React, { useState } from "react";
-import { Container } from "reactstrap";
+import React, { useContext } from "react";
+import { Container, Table, Button } from "reactstrap";
 import EmployeeForm from "./EmployeeForm";
-import EmployeeList from "./EmployeeList";
+import { formatDate } from "../../util/DateUtils";
 import ModalEmployee from "./ModalEmployee";
-
+import { EmployeeContext } from "../../context";
 const Employee = () => {
-  const [employees, setEmployees] = useState([
-    {
-      id: 1,
-      name: "Maria",
-      lastName: "Gomez",
-      docNumber: "47545664",
-      dateBirth: "22/07/1199",
-    },
-    {
-      id: 2,
-      name: "Juan",
-      lastName: "Perez",
-      docNumber: "651654",
-      dateBirth: "22/07/1199",
-    },
-  ]);
+  const { employees, deleteEmployee, startEdit } = useContext(EmployeeContext);
 
-  // const [employees, setEmployees] = useState([
-  // ]);
-
-  const [modal, setModal] = useState(false);
-  const [currentEmployee, setCurrentEmployee] = useState(null);
-
-  const toggleModal = () => {
-    setModal(!modal);
+  const NumberFormatter = ({ numberString }) => {
+    const number = parseInt(numberString);
+    return <span>{number.toLocaleString("es-ES")}</span>;
   };
 
   return (
     <div>
       <Container>
         <>
-          <EmployeeForm employees={employees} setEmployees={setEmployees} />
+          <EmployeeForm />
           <hr></hr>
           {employees.length > 0 && (
-            <EmployeeList
-              employees={employees}
-              setEmployees={setEmployees}
-              toggleModal={toggleModal}
-              setCurrentEmployee={setCurrentEmployee}
-            />
+            <>
+              <h1>Lista de Funcionarios</h1>
+              <Table>
+                <thead>
+                  <tr>
+                    <th>Nombre/s</th>
+                    <th>Apellido/s</th>
+                    <th>C.I</th>
+                    <th>Fecha de Nacimiento</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {employees.map((emp) => (
+                    <tr key={emp.id}>
+                      <td>{emp.name ? emp.name : "-"}</td>
+                      <td>{emp.lastName ? emp.lastName : "-"}</td>
+                      <td>
+                        {emp.documentNumber ? (
+                          <NumberFormatter numberString={emp.documentNumber} />
+                        ) : (
+                          "-"
+                        )}
+                      </td>
+                      <td>
+                        {emp.dateOfBirth ? formatDate(emp.dateOfBirth) : "-"}
+                      </td>
+                      <td>
+                        <Button color="warning" onClick={() => startEdit(emp)}>
+                          Editar
+                        </Button>{" "}
+                        <Button
+                          color="danger"
+                          onClick={() => deleteEmployee(emp.id)}
+                        >
+                          Eliminar
+                        </Button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
+            </>
           )}
-
-          <ModalEmployee
-            toggleModal={toggleModal}
-            modal={modal}
-            currentEmployee={currentEmployee}
-          />
+          <ModalEmployee />
         </>
       </Container>
     </div>

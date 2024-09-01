@@ -4,7 +4,6 @@ namespace ReactSharpAPI.Models
 {
     public class EmployeeHourReport
     {
-
         [Column("employee_id")]
         public int EmployeeId { get; set; }
 
@@ -22,6 +21,5 @@ namespace ReactSharpAPI.Models
 
         [Column("quantity_hour_sum")]
         public decimal QuantityHourSum { get; set; }
-
     }
 }
